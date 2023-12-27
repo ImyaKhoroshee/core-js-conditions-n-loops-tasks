@@ -276,8 +276,15 @@ function getIndexOf(str, letter) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  const hasDigit = false;
+  const numToString = String(num);
+  for (let i = 0; i < numToString.length; i += 1) {
+    if (+numToString[i] === digit) {
+      return !hasDigit;
+    }
+  }
+  return hasDigit;
 }
 
 /**
@@ -293,8 +300,21 @@ function isContainNumber(/* num, digit */) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  let left = 0;
+  let right = 0;
+
+  for (let i = 0; i < arr.length; i += 1) {
+    left += arr[i];
+    for (let j = arr.length - 1; j >= i + 2; j -= 1) {
+      right += arr[j];
+    }
+    if (left === right) {
+      return i + 1;
+    }
+    right = 0;
+  }
+  return -1;
 }
 
 /**
@@ -318,8 +338,38 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = [];
+
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = [];
+    for (let j = 0; j < size; j += 1) {
+      matrix[i][j] = 0;
+    }
+  }
+  const totalElements = size * size;
+  let col = 0;
+  let row = 0;
+  let changeCol = 0;
+  let changeRow = 1;
+  let steps = size;
+  let direction = 0;
+  for (let digit = 0; digit < totalElements; digit += 1) {
+    matrix[col][row] = digit + 1;
+    steps -= 1;
+
+    if (steps === 0) {
+      steps = size - 1 - Math.trunc(direction / 2);
+
+      const temp = changeCol;
+      changeCol = changeRow;
+      changeRow = -temp;
+      direction += 1;
+    }
+    col += changeCol;
+    row += changeRow;
+  }
+  return matrix;
 }
 
 /**
@@ -337,8 +387,18 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const matrixCopy = matrix;
+  const resultMatrix = [];
+  for (let i = 0; i < matrix.length; i += 1) {
+    resultMatrix[i] = [...matrix[i]];
+  }
+  for (let j = 0; j < resultMatrix.length; j += 1) {
+    for (let i = matrix.length - 1; i >= 0; i -= 1) {
+      matrixCopy[j][matrix.length - i - 1] = resultMatrix[i][j];
+    }
+  }
+  return matrixCopy;
 }
 
 /**
