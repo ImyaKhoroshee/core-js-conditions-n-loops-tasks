@@ -476,9 +476,8 @@ function sortByAsc(arr, left = 0, right = arr.length - 1) {
 function shuffleChar(str, iterations) {
   let realIteration = iterations;
   let resultStr = str;
-  let i = 1;
 
-  while (i <= realIteration) {
+  for (let i = 1; i <= iterations; i += 1) {
     let left = '';
     let right = '';
     for (let j = 0; j < str.length; j += 1) {
@@ -491,9 +490,22 @@ function shuffleChar(str, iterations) {
     resultStr = left + right;
 
     if (str === resultStr) {
-      realIteration %= i;
+      realIteration = iterations % i;
+      resultStr = str;
+      for (let k = 0; k < realIteration; k += 1) {
+        left = '';
+        right = '';
+        for (let j = 0; j < str.length; j += 1) {
+          if (j % 2 === 0) {
+            left += resultStr[j];
+          } else {
+            right += resultStr[j];
+          }
+        }
+        resultStr = left + right;
+      }
+      return resultStr;
     }
-    i += 1;
   }
   return resultStr;
 }
