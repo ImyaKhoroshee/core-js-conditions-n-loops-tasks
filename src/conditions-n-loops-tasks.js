@@ -527,10 +527,37 @@ function shuffleChar(str, iterations) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function findClosestBiggerDigit(array) {
+  return array.filter((elem) => elem > array[0]).sort((a, b) => a - b)[0];
 }
 
+function getNearestBigger(number) {
+  let extremeIndex = -1;
+  const arrayFromNumber = [...String(number)].map((elem) => Number(elem));
+
+  for (let i = arrayFromNumber.length - 1; i > 0; i -= 1) {
+    if (arrayFromNumber[i] > arrayFromNumber[i - 1]) {
+      extremeIndex = i - 1;
+      break;
+    }
+  }
+  if (extremeIndex === -1) {
+    return number;
+  }
+  const properSequence = arrayFromNumber.splice(0, extremeIndex);
+  const digitsToBeCombined = arrayFromNumber;
+  const closestBiggerDigit = findClosestBiggerDigit(digitsToBeCombined);
+
+  const index = digitsToBeCombined.findIndex(
+    (elem) => elem === closestBiggerDigit
+  );
+  digitsToBeCombined.splice(index, 1);
+  digitsToBeCombined.sort((a, b) => a - b);
+
+  return Number(`
+  ${properSequence.join('')}${closestBiggerDigit}${digitsToBeCombined.join('')}
+  `);
+}
 module.exports = {
   isPositive,
   getMaxNumber,
